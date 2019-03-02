@@ -1,7 +1,34 @@
 # Privacy International's data interception environment
 `Version: 2.1.2-20190305`
 
-[TOC]
+- [Privacy International's data interception environment](#privacy-internationals-data-interception-environment)
+  - [Quick Start Guide](#quick-start-guide)
+    - [Prerequisites (as this is a quick start guide):](#prerequisites-as-this-is-a-quick-start-guide)
+    - [Step 1 - Download](#step-1---download)
+    - [Step 2 - Importation](#step-2---importation)
+    - [Step 3 - Initialising](#step-3---initialising)
+    - [Step 4 - Setup](#step-4---setup)
+    - [Step 5 - Capture](#step-5---capture)
+    - [Step 6 - Android Nougat or Later](#step-6---android-nougat-or-later)
+  - [Background](#background)
+  - [Theory](#theory)
+  - [Implementation](#implementation)
+    - [Virtualbox (6.0.4)](#virtualbox-604)
+    - [Debian (10) (Buster / Unstable)](#debian-10-buster--unstable)
+    - [mitmproxy (4.0.4)](#mitmproxy-404)
+    - [dnsmasq (2.80) (`Enabled`)](#dnsmasq-280-enabled)
+    - [hostapd (2.6) (`Disabled`)](#hostapd-26-disabled)
+    - [iptables (1.8.2)](#iptables-182)
+    - [Component Layout](#component-layout)
+  - [Usage](#usage)
+    - [Prerequisites](#prerequisites)
+      - [Required Changes](#required-changes)
+      - [Before starting the VM](#before-starting-the-vm)
+      - [Once started](#once-started)
+      - [Configuring your handset](#configuring-your-handset)
+    - [Methodology](#methodology)
+    - [Interpreting your data](#interpreting-your-data)
+  - [Further Usage](#further-usage)
 
 ## Quick Start Guide
 
