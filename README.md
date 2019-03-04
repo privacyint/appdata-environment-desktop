@@ -1,4 +1,4 @@
-![Privacy International Logo](images/index.png)
+![Privacy International Logo](https://privacyinternational.org/sites/default/files/index.png)
 
 # Privacy International's data interception environment
 `Version: 2.1.2-20190305`
