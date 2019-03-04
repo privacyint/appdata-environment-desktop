@@ -1,3 +1,5 @@
+![Privacy International Logo](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmcAAACjAQMAAAD1mivZAAAABlBMVEUZFgr///8BHU7IAAAAAnRSTlP/AOW3MEoAAAOxSURBVGje7do9jus2GIXhl2ChLtxAMFwKt5QyxUWopX1L0RJYshB4UlDyz1iea3kC5CKhWoMPTFmSz3ds9A8ejaENbWhD+39q+NMakGTgJPOFLDGtBEkV0uxeVndtknXTF7LarhmEmdOakwFB5gvpqs3gDakxndGQ9Xe4aaEySQ1wRtZ6UssGeJmvN9oKsJDU3+lLWgNI1vfrK1EroeKlClBIqsRTWrS+302LBS+VrkWVk1qwvl+/3mgL4CpBhfS+VokLTjLAV4IW8iltsn72/EpQJS04aQamlUl2RguFyZwgmW93WlxCw8vQCW3Fm9NyoxlIkGtseM2nNOHNqRLNNyYV8qapJeGEO6XN3pxWonldtdbvzplXHyUNLbx0hKENbWhDG9rQhja0X1tT62OL0+xkXppxDYAPvJSl+lrqPdYMtwLwG04tvqsZ91qAXMO3NX/R4uLf1RayeWnBVwCmGeB9LV20pLan/je1smtTIUnf1qJ5qTD1Adov39HqZ60A5Le10LWwkKW5fxj6nlYJC5JmtwJvXyEr073W+4PvatHYr2fevrMa3ry0Es1JMlTg7F3/5cvnu5rRcQ1taL+81gi9+vwA4Mdex2XJDjua+qx3vGjpUXOSIdX+HSEDCLOXDKS+JEr9yTr9TCM90YB01exAiwdakJE3zV21FQjqS6J6N/eCNslIqmS1W60CXoXQtflACweaP9YWwH2tTQeakxFVyVq3epkwbydQfUmUZtJLGsfaDJALvmscaP6JFh41ANKNFl/TsjGpklW36vuqxYJ7rrkjLR1pPWGHXWtHGmq9hO5VezSvmWT4B63v+rKkQfhSS5LMa7lq5XKqZ7/ieygjP9fyg1ZJhnvQKpPWq7a+rEWDXYu71i9bXyBt2nSjvTgZvXBMQxva0IY2tKENbWj/otYzklY+ZySczKtAngGmS+LaMpJWiAuAE/eJqyfOO60XthUyAP4mv1WmbUnf2Ssah9qK69lS2vPxoyY+595e2K6PGnm+LOla7pXk11o2rwZ/0U9O19qe8KWZOD/R5s/actVCb74n6WZe6JqXyoFmj1oyL8GPe23eZhnJdi39XCtXrQ+1m2bbnCUtRJ5oy6MW+w8EP7aBe9OWbQbsWu81f65t9a/xZ9fyppVtPpXKrsUHrTxqYdfSrVaBadM+nmn1s7ZVrEvXykVr21wvVT4I0npK+6NradP2zkFa+b1r4UFbP2uta4U/yHfa0vuQY+308fRfXaMxG9rQhvaf1f4GongxifyXipAAAAAASUVORK5CYII=)
+
 # Privacy International's data interception environment
 `Version: 2.1.2-20190305`
 
@@ -28,6 +30,7 @@
       - [Configuring your handset](#configuring-your-handset)
     - [Methodology](#methodology)
   - [Troubleshooting](#troubleshooting)
+ - [Acknowledgements](#acknowledgements)
 
 ## Quick Start Guide
 
@@ -244,23 +247,47 @@ Password: `international`
 
  You can test this after the VM has booted by opening a browser and seeing if sites like `google.com` load correctly.
 
- **Desktop Items**
+**Desktop Items**
 
  There are a number of desktop items, most of them linking to configuration files. Below I list the filenames and their purposes
  
-LICENSE.md
-README.md
-administer_service.sh
-change_dhcp_settings.sh	
-change_network_interfaces.sh
-change_sources_list.sh
-change_wificonfig.sh
-mitmproxy_start.sh
-mitmproxy_stop.sh
-nic_change.sh
- 
- 
- **In the browser** (Firefox)
+- LICENSE.md - GPL 3.0 Licence
+- README.md - This Readme
+- administer_service.sh - A graphical user interface for managing systemd services
+- change_dhcp_settings.sh	- An editor for `/etc/dnsmasq.conf`
+- change_network_interfaces.sh - An editor for `/etc/network/interfaces`
+- change_sources_list.sh - An editor for `/etc/apt/sources.list`
+- change_wificonfig.sh - An editor for `/etc/hostapd/hostapd.conf`
+- mitmproxy_start.sh - A script to start mitmproxy (mitmweb)
+- mitmproxy_stop.sh - A script to terminate (all) mitmproxy's
+- change_wireless_interface.sh - A script to configure wireless interfaces automatically
+
+> Note: We would STRONGLY recommend clicking the "Execute in Terminal" option, when prompted when executing these scripts
+
+**In the browser** (Firefox)
+
+In the browser there are three bookmarks
+
+- Manual - This Document (Rendered)
+- MitMProxy - A link to the local mitmweb instance, frontend for mitmproxy
+- Jeroenhd Excellent Guide to installing Certificates in Android Nougat and late
+- mitmproxy Documentation - A link to the official documentation for mitmproxy
+
+**Workflow**
+
+1. Once the VM is started, I would suggest reading this manual in full!
+
+2. Then I would run `change_wireless_interface.sh` from the Desktop and insure that your wireless network interface is correctly configured.
+
+3. You will then need to enable `hostapd`
+
+ Run the following command in a terminal ```sudo service systemctl enable hostapd```
+
+4. Then I would recommend restarting the Virtual Machine, if you are still in terminal window, you can do this with the following command: ```sudo shutdown -r now```
+
+5. Once the machine is restarted you should be ready to do analysis. To do this, start mitmproxy using the ```mitmproxy_start.sh``` script on the desktop
+
+6. Once you have captured data, you can use ```mitmproxy_stop.sh``` to end the mitmproxy process. Your data will be saved in a `flow-*.cap` file in `/home/privacy/`
 
 #### Configuring your handset
 
@@ -362,6 +389,9 @@ The environment was compiled with Virtualbox guest additions, which means that t
 
 You may want to check that you can allocate the required resources for the VM, in its default state the VM is allocated 2CPU's and 1024MB's RAM. This means that the minimum requirements are 2CPUs and 2048MBs RAM on the host. This setup won't be particularly performant I would strongly recommend increasing both of these to 4CPUs and 2048MBs RAM if your host system has the capacity
 
+*The Firefox window that opens states "Internal Server Error"*
+
+The virtual machine didn't have internet access at startup, this is a non critical error, it just means that the documentation won't be displayed in and aesthetically pleasing way, it can still be opened by using leafpad (or any other text editor) with the README.md on the desktop.
 
 **Using the tools**
 
@@ -392,15 +422,51 @@ It may also be because the wireless nic is not correctly defined in `/etc/networ
 
 This means either mitmproxy isn't running, or you legitimately have no Internet. If mitmproxy is running, check that you have internet. You can do this by trying to `ping google.com` in terminal, if you are seeing issues/timeouts, reconnect and restart the VM
 
-*mitmproxy says that the certificate is unknown*
+*mitmproxy says `Client Handshake failed. The client may not trust the proxy's certificate`*
 
-*mitmproxy says it can't handle pre http2 connections (and it logging PRI with crosses next to it)*
+The certificate has not been installed on your handset correctly, please see: [Android Nougat or Later Certificate installation](#step-6---android-nougat-or-later)
+
+*mitmproxy says `Initiating HTTP/2 connections with prior knowledge are currently not supported `*
+
+This is a known issue with mitmproxy and recent versions of Android, the IP's being connected to appear to belong to Google. See [this](https://github.com/mitmproxy/mitmproxy/issues/3362) Github issue for more detail
 
 *I'm using Android Pie (9) or later, and I'm having difficulties*
 
+You may experience issues with Android Pie, Android Pie supports TLS 1.3 which has mitigations against man-in-the-middle, some providers (like Facebook) won't negotiate a connection if there is a man-in-the-middle detected
+
 *I'm trying to connect my device for ADB, but Virtualbox won't recognise it*
+
+Modern phones that use USB-c type connectors may not have backwards support for USB 1.1 that ships by default in Virtualbox, you may need to install the [Virtualbox extension pack](https://www.virtualbox.org/wiki/Downloads) (if you are able to comply with the licence), to and configure USB 3.0 in the VM settings.
 
 *My device is connected, but I can't `adb shell`*
 
+Make sure that USB Debugging is enabled (this may involve enabling developer mode on your device). If USB Debugging is enabled, check that your device is connect in "File Transfer", "MTP" or "PTP" mode (some devices don't allow the bridge to function in "USB Charge only" mode)
+
 *In `adb shell` command `su` is not found*
 
+Your device hasn't been "rooted", make sure your device is "rooted" by searching for appropriate documentation online. PI accepts no liability for a device becoming inoperable or data loss due to an incorrect rooting process.
+
+## Acknowledgements
+
+Privacy International would like to thank all the contributors to the Open Source projects used in this environment.
+
+Privacy International would also like to thank:
+
+- The 35th Chaos Congress (35C3) and Chaos Computer Club (CCC) - for their help, support and critique on our published work
+- Exodus Privacy - For their original research and tools
+- Mobilesicher.de - For their research
+
+**This document was contributed to by:**
+
+From Privacy International:
+
+Christopher Weatherhead, Frederike Kaltheuner, Eliot Bendinelli, Ed Geraghty and Eva Blum-Dumontet
+
+
+Further pull requests will be accepted
+
+---
+
+Privacy International is committed to fighting for the right to privacy across the world - but we need your support.
+
+[Individual donations are incredibly important to us, and allow us to fund work like this](https://support.privacyinternational.org)
