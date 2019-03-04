@@ -27,8 +27,7 @@
       - [Once started](#once-started)
       - [Configuring your handset](#configuring-your-handset)
     - [Methodology](#methodology)
-    - [Interpreting your data](#interpreting-your-data)
-  - [Further Usage](#further-usage)
+  - [Troubleshooting](#troubleshooting)
 
 ## Quick Start Guide
 
@@ -184,25 +183,20 @@ iptables is the de-facto standard firewalling system in many linux based operati
 ### Component Layout
 
 ```
++----------+          +-------------------------+             +--------------+
+|  Public  +----------+  Privacy International  +-------------+Android Device|
+| Internet |         ||  MitmProxy Environment  ||  Wireless: |with mitm cert|
++----------+         ||        VirtualBox       ||pi_mitmproxy+--------------+
+               enp0s3+---------------------------+USB WiFi
+                (NAT)                             Dongle
 
- +----------+  ethernet +-----------+  ethernet  +------------+  WiFi +-----------+
- |  Public  +-----------+VirtualBox +------------+Network     |       |  Android  |
- | Internet |         | |   PI VM   | |          |Access Point| <--+--+Phones WLAN|
- +----------+         | +-----------+ |          +------------+    or +-----------+
-                      |       |       | USB/PCI(e)                 |
-                      +       |       +---------> [optionally]     |
-                   enp0s3     |    enp0s8      Your WLAN adapter <-+
-                   (NAT)      |   (Bridged)         (hostapd)
-                 [Adapter 1]  +  [Adapter 2]
-                          mitmproxy
-                           dnsmasq
 ```
 
 Lets walk through the diagram from left-to-right. The Internet as displayed in the diagram, would be which ever way you usually connect to the internet.  Adapter 1 in virtualbox (enp0s3 inside the VM) should be set as a NAT device, this will mean that the VM will use the hosts network connection to gain access to the internet.
 
 The Virtualbox VM should be booted and mitmproxy should be running before trying to connect any downstream devices. There are scripts on the desktop which I will explain in more detail in the usage section.
 
-To the right of the VM is a wireless NIC (I assume a USB dongle), in the shipped configuration this should be disabled, and should be configured before attempting to run mitmproxy.
+To the right of the VM is a wireless NIC (I assume a USB dongle), in the shipped configuration this should be disabled, and should be configured before attempting to run mitmproxy. It will host the Wireless network `pi_mitmproxy`
 
 Finally on the far right is the device you want to analyse, this is assumed to be an Android Phone. The following changes will need to be made to device
 - The network will need to be changed to that provided by the WLAN NIC
@@ -253,11 +247,160 @@ Password: `international`
  **Desktop Items**
 
  There are a number of desktop items, most of them linking to configuration files. Below I list the filenames and their purposes
+ 
+LICENSE.md
+README.md
+administer_service.sh
+change_dhcp_settings.sh	
+change_network_interfaces.sh
+change_sources_list.sh
+change_wificonfig.sh
+mitmproxy_start.sh
+mitmproxy_stop.sh
+nic_change.sh
+ 
+ 
+ **In the browser** (Firefox)
 
 #### Configuring your handset
 
+Google changed the way the certificate store works in Android Nougat, please follow [this guide to correctly](https://blog.jeroenhd.nl/article/android-7-nougat-and-certificate-authorities) to install mitmproxy's certificate. If you are using earlier versions of Android, you should be able to visit mitm.it once connected to your mitmproxy access point, and install the certificate directly. The abridged steps for installing on Nougat and later are below.
+
+The abridged steps are as follows:
+Get the ID of the Certificate in a format that Android Expects
+
+`sudo openssl x509 -inform PEM -subject_hash_old -in /root/.mitmproxy/mitmproxy-ca-cert.pem | head -1`
+
+Note the output: e.g "abcdef12"
+
+Copy the Certificate to the Device over ADB
+
+`adb push /root/.mitmproxy/mitmproxy-ca-cert.pem /sdcard/<NamefromOpenSSLOutput>.0`
+
+Remount the /system partition, copy the certificate, set its permissions (requires superuser access)
+
+```
+adb shell
+su
+mount -o remount,rw /system
+cp /sdcard/<NamefromOpenSSLOutput>.0 /system/etc/security/cacerts
+chmod 644 /system/etc/security/cacerts/NamefromOpenSSLOutput>.0
+chown root:root /system/etc/security/cacerts/NamefromOpenSSLOutput>.0
+mount -o remount,ro /system
+```
+
+Then we should reboot the device
+
+```
+reboot
+```
+
+Once restarted if you got to on the Android device (names may vary by version) Setting > Security > Encryption & Credentials > Trusted Credentials > System you should see mitmproxy's certificate listed.
+
+
 ### Methodology
 
-### Interpreting your data
+The methodology that Privacy International used to do our analyses is as follows:
 
-## Further Usage
+All data being transmitted between Facebook and apps is encrypted in transit using Transport Layer
+Security (TLS, formally SSL). Our analysis consisted of capturing and decrypting data in transit between
+our own device and Facebook’s servers (so called "man-in-the-middle") using the free and open source
+software tool called "mitmproxy", an interactive HTTPS proxy. Mitmproxy works by decrypting and
+encrypting packets on the fly by masquerading as a remote secure endpoint (in this case Facebook). In
+order to make this work, we added mitmproxy's public key to our device as a trusted authority. The data
+exists on our local network at time of decryption.
+
+A new Google Account was setup for the sole purpose of this research and a full phone "nandroid" backup
+was taken so the device could quickly be returned to a known state, particularly considering that when
+some apps are installed and run, they continue to run in the background potentially polluting the results.
+
+All session data that traversed mitmproxy ("flows") where recorded and stored, so they could be analyzed
+further.
+
+- All session data that traversed mitmproxy ("flows") where recorded and stored, so they could be
+analyzed further, and shared later should the need arise. (in the environment this happens automatically using the scripts provided)
+- The screen and interactions where recorded as video using the Androids Developer Bridge (ADB) all
+activity that takes place on the screen of the Android device is recorded (you may wish to do this for your own documentation purposes)
+
+Once this was completed and appropriate setting within the phone where selected (pertaining to Wi-Fi,
+certificate trust, security such as PIN and screen lockout and developer tools such as showing touches)
+a full phone "nandroid" backup was taken so the device could quickly be returned to a known state,
+particularly considering that when some apps are installed and run, they continue to run in the
+background potentially polluting the results.
+
+- After each wipe the following steps where undertaken
+- Connect to a non-intercepting Wi-Fi
+- Download the Application from the Google Play Store
+- Connect to mitmproxy VM (via Wi-Fi), and create a new flow
+- Start Screen Recording using ADB, start screen recording in Virtualbox
+- Open the app, and do various activities for up to 320 seconds (if the app requires sign up to use,
+Google account created at the start of the process)
+- Save screen recording off the phone and stop the flow in mitmproxy
+- Reboot to recovery and restore the nandroid backup, ready to restart the process
+- Reboot the device
+
+## Troubleshooting
+
+Common issues and their fixes
+
+**Virtualbox installation note for MacOS users**
+
+[MacOS]: If you are using High Sierra or later, you will need to unblock the kernel driver that Virtualbox installs. This can be done in Security & Privacy in the System Preferences, a prompt should appear during installation.
+
+**Starting the environment**
+
+*I'm having issues starting the environment*
+
+If you are having issues starting the environment, check that Virtualbox is installed correctly (see note above). Check that Virtualbox is at least version 6.x. 
+>If you are still having issues send an email to chrisw@privacyinternational.org with the [mitmproxy19] as subject line, and I will update this guide with other common issues.
+
+*I'm having issues with display*
+
+The environment was compiled with Virtualbox guest additions, which means that the display should automatically resize. I would suggest using the View -> Virtual Display menu, and setting the virtual display to at least 1920x1080
+
+*The environment is slow or unresponsive*
+
+You may want to check that you can allocate the required resources for the VM, in its default state the VM is allocated 2CPU's and 1024MB's RAM. This means that the minimum requirements are 2CPUs and 2048MBs RAM on the host. This setup won't be particularly performant I would strongly recommend increasing both of these to 4CPUs and 2048MBs RAM if your host system has the capacity
+
+
+**Using the tools**
+
+*My wireless USB isn't appearing in `iw list` and its definitely connected to the VM*
+
+The environment only has drivers/firmware for Ralink adapters, other adapters (such as Realtek) will require their own drivers to be installed, configuring your specific wireless nic falls outside the scope of this document. Either Google "<WLANChipset> Debian" or contact your vendor.
+
+*I can't see a wireless network called `pi_mitmproxy`*
+
+Check that `hostapd` is running, that the nic is correctly set in the `/etc/hostapd/hostapd.conf` configuration files. You can always start `hostapd` in debug mode
+
+```sudo service hostapd stop; sudo killall hostapd; sleep 4;sudo hostapd -p /etc/hostapd/hostapd.conf```
+
+*My device is looping between connecting and disabled, when I look at the "Wi-Fi" setting in Android*
+
+This is indicative of `dnsmasq` not correctly issuing an IP address. You can restart `dnsmasq`:
+
+`sudo service dnsmasq restart`
+
+It may also be because the wireless nic is not correctly defined in `/etc/network/interfaces/` check that the nic has a valid stanza in that configuration file, then restart networking and dnsmasq
+
+`sudo service networking restart; sudo service dnsmasq restart`
+
+>Note DNSMasq occasionally experiences a race condition with `hostapd`, restarting both services should rectify this.
+>`sudo service networking restart; sudo service hostapd restart; sudo service dnsmasq restart`
+
+*My device is connected, but states it has no internet access*
+
+This means either mitmproxy isn't running, or you legitimately have no Internet. If mitmproxy is running, check that you have internet. You can do this by trying to `ping google.com` in terminal, if you are seeing issues/timeouts, reconnect and restart the VM
+
+*mitmproxy says that the certificate is unknown*
+
+*mitmproxy says it can't handle pre http2 connections (and it logging PRI with crosses next to it)*
+
+*I'm using Android Pie (9) or later, and I'm having difficulties*
+
+*I'm trying to connect my device for ADB, but Virtualbox won't recognise it*
+
+*My device is connected, but I can't `adb shell`*
+
+*In `adb shell` command `su` is not found*
+
