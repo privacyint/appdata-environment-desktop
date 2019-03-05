@@ -111,7 +111,7 @@ If you are getting errors in the logfile for mitmproxy stating that the certific
 
 Google changed the way the certificate store works in Android Nougat, please follow [this guide to correctly](https://blog.jeroenhd.nl/article/android-7-nougat-and-certificate-authorities) install your certificate.
 
-As this is a quick start rough guide is:
+As this is a quick start, rough guide is:
 Get the ID of the Certificate in a format that Android Expects
 
 `sudo openssl x509 -inform PEM -subject_hash_old -in /root/.mitmproxy/mitmproxy-ca-cert.pem | head -1`
@@ -151,13 +151,13 @@ This is a replica of the original environment used to conduct the research, ther
 
 ## Theory
 
-This toolkit is built around a flaw that exists in the trust paradigm used extensively on the Internet. When secure connections are established such as HTTPS, the client checks against an internal store of "trust anchors" in its "trust store" known as certificate authorities (or CAs for short). CA's exist in most operating systems through a number of methods, predominantly commercial agreements. This toolkit introduces are own CA that we add to the "trust store" which allows us to intercept secure traffic in transit, because the client now trusts this CA too in addition to the preconfigured ones.
+This toolkit is built around a flaw that exists in the trust paradigm used extensively on the Internet. When secure connections are established such as HTTPS, the client checks against an internal store of "trust anchors" in its "trust store" known as certificate authorities (or CAs for short). CA's exist in most operating systems through a number of methods, predominantly commercial agreements. This toolkit introduces a CA that we add to the "trust store" (see step 5 and 6 above) which allows us to intercept secure traffic in transit, because the client now trusts this CA in addition to the preconfigured ones.
 
-This is where the term man-in-the-middle comes from, as we are sitting between the client and the server in the middle and intercepting and analysing the communication.
+This is where the term man-in-the-middle comes from, as we are sitting in the middle between the client and the server, intercepting and analysing the communication.
 
 ## Implementation
 
-Inside this toolkit there are number of components which work together to allow for interception of data in transit. Let us talk through each element and how they work together, then I will discuss the various ways that they can be used
+Inside this toolkit there are number of components which work together to allow for interception of data in transit. Let us talk through each element and how they work together, then we will discuss the various ways that they can be used
 
 ### Virtualbox (6.0.4)
 
@@ -197,12 +197,12 @@ iptables is the de-facto standard firewalling system in many linux based operati
 
 Lets walk through the diagram from left-to-right. The Internet as displayed in the diagram, would be which ever way you usually connect to the internet.  Adapter 1 in virtualbox (enp0s3 inside the VM) should be set as a NAT device, this will mean that the VM will use the hosts network connection to gain access to the internet.
 
-The Virtualbox VM should be booted and mitmproxy should be running before trying to connect any downstream devices. There are scripts on the desktop which I will explain in more detail in the usage section.
+The Virtualbox VM should be booted and mitmproxy should be running before trying to connect any downstream devices. There are scripts on the desktop which are explained in more detail in the [usage section](#once-started).
 
-To the right of the VM is a wireless NIC (I assume a USB dongle), in the shipped configuration this should be disabled, and should be configured before attempting to run mitmproxy. It will host the Wireless network `pi_mitmproxy`
+To the right of the VM is a wireless NIC (we assume a USB dongle), in the shipped configuration this should be disabled, and should be configured before attempting to run mitmproxy. It will host the Wireless network `pi_mitmproxy`
 
 Finally on the far right is the device you want to analyse, this is assumed to be an Android Phone. The following changes will need to be made to device
-- The network will need to be changed to that provided by the WLAN NIC
+- It will be connected to the network willthat provided by the WLAN NIC (`pi_mitmproxy`)
 - You will need to install mitmproxy's certificate into the devices trust store, further instructions for this can be found below
 
 
@@ -214,19 +214,19 @@ Finally on the far right is the device you want to analyse, this is assumed to b
 * A Device you wish to analyse, in this guide an Android phone is assumed, and it is assumed to be rooted
 * A wireless USB Dongle, the main guide will assume a Ralink based one, installation and configuration of the multitude of wireless network adapters falls outside the scope of this guide
 
-My suggestion for USB Dongles would be:
+Our suggestion for USB Dongles is the following:
 
 [amzn.com/B019XUDHFC](amzn.com/B019XUDHFC) (they are not fancy, but they do work) (search amazon for ralink rt5370 in your own country)
 
 #### Required Changes
 
-As your environment and hardware will be different to mine, there are few things worth checking before starting the Virtual Machine.
+As your environment and hardware will be different to the one used by Privacy International, there are few things worth checking before starting the Virtual Machine.
 
 #### Before starting the VM
 
 **The number of assigned CPU's and quantity of Memory**
 
-You may want to check that you can allocate the required resources for the VM, in its default state the VM is allocated 2CPU's and 1024MB's RAM. This means that the minimum requirements are 2CPUs and 2048MBs RAM on the host. This setup won't be particularly performant I would strongly recommend increasing both of these to 4CPUs and 2048MBs RAM if your host system has the capacity
+You may want to check that you can allocate the required resources for the VM, in its default state the VM is allocated 2CPU's and 1024MB's RAM. This means that the minimum requirements are 2CPUs and 2048MBs RAM on the host. This setup won't be particularly performant and we strongly recommend increasing both of these to 4CPUs and 2048MBs RAM if your host system has the capacity
 
 **Network Controllers**
 
@@ -245,12 +245,13 @@ Password: `international`
 
 **Internet Connectivity**
 
- You can test this after the VM has booted by opening a browser and seeing if sites like `google.com` load correctly.
+ You can test this after the VM has booted by opening a browser and seeing if sites like `privacyinternational.org` load correctly.
 
 **Desktop Items**
 
- There are a number of desktop items, most of them linking to configuration files. Below I list the filenames and their purposes
+ There are a number of desktop items, most of them linking to configuration files. Below is a list of the filenames and their purposes
  
+ ```
 - LICENSE.md - GPL 3.0 Licence
 - README.md - This Readme
 - administer_service.sh - A graphical user interface for managing systemd services
@@ -261,8 +262,9 @@ Password: `international`
 - mitmproxy_start.sh - A script to start mitmproxy (mitmweb)
 - mitmproxy_stop.sh - A script to terminate (all) mitmproxy's
 - change_wireless_interface.sh - A script to configure wireless interfaces automatically
+```
 
-> Note: We would STRONGLY recommend clicking the "Execute in Terminal" option, when prompted when executing these scripts
+> Note: We would STRONGLY recommend clicking the "Execute in Terminal" option when executing any of these scripts
 
 **In the browser** (Firefox)
 
@@ -275,15 +277,13 @@ In the browser there are three bookmarks
 
 **Workflow**
 
-1. Once the VM is started, I would suggest reading this manual in full!
+1. Once the VM is started we suggest reading this manual in full!
 
-2. Then I would run `change_wireless_interface.sh` from the Desktop and insure that your wireless network interface is correctly configured.
+2. Run `change_wireless_interface.sh` from the Desktop and insure that your wireless network interface is correctly configured.
 
-3. You will then need to enable `hostapd`
+3. Enable `hostapd` by running the following command in a terminal ```sudo service systemctl enable hostapd```
 
- Run the following command in a terminal ```sudo service systemctl enable hostapd```
-
-4. Then I would recommend restarting the Virtual Machine, if you are still in terminal window, you can do this with the following command: ```sudo shutdown -r now```
+4. We then recommend restarting the Virtual Machine. If you are still in terminal window, you can do this with the following command: ```sudo shutdown -r now```
 
 5. Once the machine is restarted you should be ready to do analysis. To do this, start mitmproxy using the ```mitmproxy_start.sh``` script on the desktop
 
@@ -337,25 +337,9 @@ encrypting packets on the fly by masquerading as a remote secure endpoint (in th
 order to make this work, we added mitmproxy's public key to our device as a trusted authority. The data
 exists on our local network at time of decryption.
 
-A new Google Account was setup for the sole purpose of this research and a full phone "nandroid" backup
-was taken so the device could quickly be returned to a known state, particularly considering that when
-some apps are installed and run, they continue to run in the background potentially polluting the results.
+The Android handset used was running a "pure" version of Android and connected to a new Google Account setup for the sole purpose of this research. Once the device setup with appropriate setting (pertaining to Wi-Fi, certificate trust, security such as PIN and screen lockout, developer tools such as showing touches) a full phone "nandroid" backup was taken so the device could quickly be returned to a known state. This is particularly important as considering that when some apps are installed and run, they continue to run in the background potentially polluting the results. 
 
-All session data that traversed mitmproxy ("flows") where recorded and stored, so they could be analyzed
-further.
-
-- All session data that traversed mitmproxy ("flows") where recorded and stored, so they could be
-analyzed further, and shared later should the need arise. (in the environment this happens automatically using the scripts provided)
-- The screen and interactions where recorded as video using the Androids Developer Bridge (ADB) all
-activity that takes place on the screen of the Android device is recorded (you may wish to do this for your own documentation purposes)
-
-Once this was completed and appropriate setting within the phone where selected (pertaining to Wi-Fi,
-certificate trust, security such as PIN and screen lockout and developer tools such as showing touches)
-a full phone "nandroid" backup was taken so the device could quickly be returned to a known state,
-particularly considering that when some apps are installed and run, they continue to run in the
-background potentially polluting the results.
-
-- After each wipe the following steps where undertaken
+After each wipe the following steps where undertaken:
 - Connect to a non-intercepting Wi-Fi
 - Download the Application from the Google Play Store
 - Connect to mitmproxy VM (via Wi-Fi), and create a new flow
@@ -365,6 +349,12 @@ Google account created at the start of the process)
 - Save screen recording off the phone and stop the flow in mitmproxy
 - Reboot to recovery and restore the nandroid backup, ready to restart the process
 - Reboot the device
+
+Details of the analysis were recorded using the following methods:
+
+- All session data that traversed mitmproxy ("flows") where recorded and stored, so they could be
+analyzed further, and shared later should the need arise. (in the environment this happens automatically using the scripts provided)
+- All activities and interactions on the screen where recorded as video using Androids Developer Bridge's (ADB) screenrecord. (you may wish to do this for your own documentation purposes)
 
 ## Troubleshooting
 
@@ -383,11 +373,11 @@ If you are having issues starting the environment, check that Virtualbox is inst
 
 *I'm having issues with display*
 
-The environment was compiled with Virtualbox guest additions, which means that the display should automatically resize. I would suggest using the View -> Virtual Display menu, and setting the virtual display to at least 1920x1080
+The environment was compiled with Virtualbox guest additions, which means that the display should automatically resize. We suggest using the View -> Virtual Display menu, and setting the virtual display to at least 1920x1080
 
 *The environment is slow or unresponsive*
 
-You may want to check that you can allocate the required resources for the VM, in its default state the VM is allocated 2CPU's and 1024MB's RAM. This means that the minimum requirements are 2CPUs and 2048MBs RAM on the host. This setup won't be particularly performant I would strongly recommend increasing both of these to 4CPUs and 2048MBs RAM if your host system has the capacity
+You may want to check that you can allocate the required resources for the VM, in its default state the VM is allocated 2CPU's and 1024MB's RAM. This means that the minimum requirements are 2CPUs and 2048MBs RAM on the host. This setup won't be particularly performant we strongly recommend increasing both of these to 4CPUs and 2048MBs RAM if your host system has the capacity
 
 *The Firefox window that opens states "Internal Server Error"*
 
@@ -397,11 +387,11 @@ The virtual machine didn't have internet access at startup, this is a non critic
 
 *My wireless USB isn't appearing in `iw list` and its definitely connected to the VM*
 
-The environment only has drivers/firmware for Ralink adapters, other adapters (such as Realtek) will require their own drivers to be installed, configuring your specific wireless nic falls outside the scope of this document. Either Google "<WLANChipset> Debian" or contact your vendor.
+The environment only has drivers/firmware for Ralink adapters, other adapters (such as Realtek) will require their own drivers to be installed, configuring your specific wireless nic falls outside the scope of this document. Either Google `<WLANChipset> Debian` or contact your vendor.
 
 *I can't see a wireless network called `pi_mitmproxy`*
 
-Check that `hostapd` is running, that the nic is correctly set in the `/etc/hostapd/hostapd.conf` configuration files. You can always start `hostapd` in debug mode
+Check that `hostapd` is running, that the nic is correctly set in the `/etc/hostapd/hostapd.conf` configuration files. You can always start `hostapd` in debug mode using this command:
 
 ```sudo service hostapd stop; sudo killall hostapd; sleep 4;sudo hostapd -p /etc/hostapd/hostapd.conf```
 
