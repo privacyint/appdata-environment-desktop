@@ -234,15 +234,6 @@ You should check that your Wireless NIC is correctly connected to the Virtual Ma
 
 #### Once started
 
->**Login**
-
-> Login should now be automatic, however if required, details below
-
->The default username and password is:
-
->Username: `privacy` <br />
-Password: `international`
-
 **Internet Connectivity**
 
  You can test this after the VM has booted by opening a browser and seeing if sites like `privacyinternational.org` load correctly.
