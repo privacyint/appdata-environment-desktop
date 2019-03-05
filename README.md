@@ -47,7 +47,7 @@
 
 ### Step 1 - Download
 
-Head to Privacy International's website and download the VM: [https://privacyinternational.org/mitmproxy19]()
+Head to Privacy International's website and download the VM: [https://privacyinternational.org/mitmproxy19](https://privacyinternational.org/mitmproxy19)
 
 Download the Virtual Appliance (OVA, extension .ova)
 
