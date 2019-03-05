@@ -177,7 +177,7 @@ dnsmasq is a lightweight DNS (domain name service) and DHCP (dynamic-host config
 
 ### hostapd (2.6) (`Disabled`)
 
-hostapd is a configurable 802.11 (Wireless LAN) daemon, it allows wireless devices to be configured in a number of ways. In this toolset it is disabled by default as I don't know what WLAN controller you are using, it does however have a sane default configuration setup and can be easily enabled.
+hostapd is a configurable 802.11 (Wireless LAN) daemon, it allows wireless devices to be configured in a number of ways. In this toolset it is disabled by default as we don't know what WLAN controller you are using, it does however have a sane default configuration setup and can be easily enabled.
 
 ### iptables (1.8.2)
 
