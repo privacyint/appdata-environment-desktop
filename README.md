@@ -442,9 +442,9 @@ Privacy International would like to thank all the contributors to the Open Sourc
 
 Privacy International would also like to thank:
 
-- The 35th Chaos Congress (35C3) and Chaos Computer Club (CCC) - for their help, support and critique on our published work
-- Exodus Privacy - For their original research and tools
-- Mobilesicher.de - For their research
+- The 35th Chaos Congress (35C3) and Chaos Computer Club (CCC) - for their help and support.
+- [Exodus Privacy](https://exodus-privacy.eu.org/en/)- For their original research and tools
+- [Mobilsicher.de](https://mobilsicher.de/) - For their research
 
 **This document was contributed to by:**
 
