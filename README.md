@@ -379,7 +379,7 @@ Common issues and their fixes
 *I'm having issues starting the environment*
 
 If you are having issues starting the environment, check that Virtualbox is installed correctly (see note above). Check that Virtualbox is at least version 6.x. 
->If you are still having issues send an email to chrisw@privacyinternational.org with the [mitmproxy19] as subject line, and I will update this guide with other common issues.
+>If you are still having problems, create an issue on the github tracker.
 
 *I'm having issues with display*
 
