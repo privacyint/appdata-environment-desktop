@@ -39,7 +39,7 @@
 ### Prerequisites (as this is a quick start guide):
 
 - VirtualBox 6.x Installed
-- A Wifi USB Dongle (specifically [https://amzn.com/B00JZFT3VS](https:://amzn.com/B00JZFT3VS) or any other Ralink 5370 Chipset USB Adapter) 
+- A Wifi USB Dongle (specifically [https://amzn.com/B00JZFT3VS](https://amzn.com/B00JZFT3VS) or any other Ralink 5370 Chipset USB Adapter) 
 - Internet Connectivity
 - Some experience of Unix like operating systems (particularly systemd)
 - Some experience with Android and the Android Developer Bridge (ADB)
