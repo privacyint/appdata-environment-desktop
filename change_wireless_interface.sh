@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Determine the NIC
-wlannic=`iw dev | awk '$1=="Interface"{print $2}'`
+wlannic=`sudo iw dev | awk '$1=="Interface"{print $2}'`
 ## Ask the user to apply to config
 if [ "$wlannic" == "" ]; then
 zenity --warning --text="Your Wireless NIC was not detected"
