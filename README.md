@@ -74,7 +74,7 @@ change_wireless_interface.sh and provide it with the device identifier for your 
 
 Open the Terminal (Applications -> System Tools -> QTerminal)
 
-Type the following command ```sudo service systemctl enable hostapd``` to will enable the Wireless Daemon
+Type the following command ```sudo service systemctl enable hostapd``` to enable the Wireless Daemon
 
 **Reboot the Virtual Machine**
 
