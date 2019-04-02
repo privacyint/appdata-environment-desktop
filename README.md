@@ -70,11 +70,11 @@ Make sure the Wifi USB dongle is connected to the Virtual Machine ( Menu Bar - D
 Start the Virtual Machine, either by clicking the *Start* button in the VirtualBox Manager, or by double-clicking on the VM in the list.
 
 Once the desktop has loaded, you will need to run 
-change_wireless_interface.sh and provide it with the device identifier for your wireless network dongle
+`change_wireless_interface.sh`, which will provide the wireless daemon with the device identifier for your wireless network dongle
 
 Open the Terminal (Applications -> System Tools -> QTerminal)
 
-Type the following command ```sudo service systemctl enable hostapd``` to enable the Wireless Daemon
+Type the following command ```sudo systemctl enable hostapd``` to enable the Wireless Daemon
 
 **Reboot the Virtual Machine**
 
