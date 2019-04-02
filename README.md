@@ -267,7 +267,7 @@ You should check that your Wireless NIC is correctly connected to the Virtual Ma
  There are a number of desktop items, most of them linking to configuration files. Below is a list of the filenames and their purposes
  
  ```
-- LICENSE.md - GPL 3.0 Licence
+- LICENSE.md                   - GPL 3.0 Licence
 - README.md                    - This Readme
 - administer_service.sh        - A graphical user interface for managing systemd services
 - change_dhcp_settings.sh	     - An editor for `/etc/dnsmasq.conf`
@@ -283,7 +283,7 @@ You should check that your Wireless NIC is correctly connected to the Virtual Ma
 
 **In the browser** (Firefox)
 
-In the browser there are f bookmarks
+In the browser there are four bookmarks
 
 - Manual - This Document (Rendered)
 - MitMProxy - A link to the local mitmweb instance, frontend for mitmproxy
