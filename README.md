@@ -277,6 +277,8 @@ You should check that your Wireless NIC is correctly connected to the Virtual Ma
 - mitmproxy_start.sh           - A script to start mitmproxy (mitmweb)
 - mitmproxy_stop.sh            - A script to terminate (all) mitmproxy's
 - change_wireless_interface.sh - A script to configure wireless interfaces automatically
+- mitmproxy_start-nohttp2.sh   - A script to start mitmproxy (mitmweb) without http2 support, (mitigates some Android Bugs)
+- mitmproxy_start-iOS.sh .     - A script to start mitmproxy (mitmweb) non-transparently, so that iOS devices can be intercepted
 ```
 
 > Note: We would STRONGLY recommend clicking the "Execute in Terminal" option when executing any of these scripts
