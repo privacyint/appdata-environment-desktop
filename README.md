@@ -16,7 +16,7 @@
   - [Theory](#theory)
   - [Implementation](#implementation)
     - [Virtualbox (6.0.4)](#virtualbox-604)
-    - [Debian (10) (Buster / Testing)](#debian-10-buster--testing)
+    - [Debian (10) (Buster)](#debian-10-buster)
     - [mitmproxy (4.0.4)](#mitmproxy-404)
     - [dnsmasq (2.80) (`Enabled` by default)](#dnsmasq-280-enabled)
     - [hostapd (2.6) (`Disabled` by default)](#hostapd-26-disabled)
@@ -168,11 +168,11 @@ As far as the operating system inside the Virtual Machine is concerned it is run
 
 It also means that any activity inside the virtual machine is contained and isolated from the real operating system that you use on the host.
 
-### Debian (10) (Buster / Testing)
+### Debian (10) (Buster)
 
 Debian is a flavour of GNU/Linux, a UNIX-like Kernel and operating system architecture.
 
-Debian Buster is the current development build for the next major release of the operating system ("Testing"). Buster differs from the previous stable release (Stretch) in that it incorporates an updated version of Python which eases the installation of mitmproxy, a major component of this toolset
+Debian Buster is the current stable release of the operating system ("Testing"). Buster differs from the previous stable release (Stretch) in that it incorporates an updated version of Python which eases the installation of mitmproxy, a major component of this toolset
 
 ### mitmproxy (4.0.4)
 
