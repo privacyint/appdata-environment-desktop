@@ -172,8 +172,6 @@ It also means that any activity inside the virtual machine is contained and isol
 
 Debian is a flavour of GNU/Linux, a UNIX-like Kernel and operating system architecture.
 
-Debian Buster is the current stable release of the operating system. Buster differs from the previous stable release (Stretch) in that it incorporates an updated version of Python which eases the installation of mitmproxy, a major component of this toolset
-
 ### mitmproxy (4.0.4)
 
 mitmproxy is an open-source proxy (intermediary) server written in Python.
@@ -427,12 +425,13 @@ Privacy International would also like to thank:
 - The 35th Chaos Congress (35C3) and Chaos Computer Club (CCC) - for their help and support.
 - [Exodus Privacy](https://exodus-privacy.eu.org/en/)- For their original research and tools
 - [Mobilsicher.de](https://mobilsicher.de/) - For their research
+- Frederike Kaltheuner for her support in this research
 
 **This document was contributed to by:**
 
 From Privacy International:
 
-Christopher Weatherhead, Frederike Kaltheuner, Eliot Bendinelli, Ed Geraghty and Eva Blum-Dumontet
+Christopher Weatherhead, Eliot Bendinelli, Ed Geraghty and Eva Blum-Dumontet
 
 
 Further pull requests will be accepted
