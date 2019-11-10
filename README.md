@@ -236,7 +236,7 @@ Let's walk through the diagram from left-to-right.
 
 Our suggestion for USB Dongles is the following:
 
-* [amzn.com/B019XUDHFC](amzn.com/B019XUDHFC) (they are not fancy, but they do work) (search amazon for ralink rt5370 in your own country)
+* [https://www.amazon.com/s?k=Ralink+5370](https://www.amazon.com/s?k=Ralink+5370) (they are not fancy, but they do work) (search amazon for ralink rt5370 in your own country)
 
 #### Required Changes
 
