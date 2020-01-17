@@ -67,5 +67,3 @@ COMMIT
 COMMIT
 EOF3
 echo "File Changes Complete"
-
-exit 0

@@ -8,4 +8,3 @@ lxsudo apk-mitm $APKFILE
 ## zenity --progress --text="Processing APK File:\n$APKFILE" --pulsate --no-cancel --auto-kill
 pcmanfm-qt -n $(dirname $APKFILE) &
 echo Complete
-exit 0
