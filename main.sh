@@ -1,7 +1,7 @@
 #!/bin/bash
 while :
 do
-ask=`zenity --list --title="Please Select a task" --column="0" "Configure Wireless Adapter" "Enable hostapd" "Run an APK through APK-Mitm" "Start mitmproxy" "Show the documentation" --width=200 --height=300 --hide-header`
+ask=`zenity --list --title="Please Select a task" --column="0" "Configure Wireless Adapter" "Enable hostapd" "Run an APK through APK-Mitm" "Start mitmproxy" "Show the documentation" "Exit" --width=200 --height=300 --hide-header`
 if [ "$ask" == "Configure Wireless Adapter" ]; then
     bash ./systemcfg-scripts/change_wireless_interface.sh
 fi
@@ -20,7 +20,9 @@ fi
 
 if [ "$ask" == "Show the documentation" ]; then
     grip -b ~/Desktop &
-  else
+fi
+
+if [ "$ask" == "Exit" ]; then
     break
 fi
 
