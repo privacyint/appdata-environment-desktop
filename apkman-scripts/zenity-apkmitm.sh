@@ -5,7 +5,7 @@ APKFILE=$(zenity --file-selection --file-filter="*.apk")
 mkdir ~/apk-mitm-processed
 cd ~/apk-mitm-processed
 sudo apk-mitm $APKFILE
-# zenity --progress --text="Processing APK File:\n$APKFILE" --pulsate
-pcmanfm-qt -n ~/apk-mitm-processed
+#zenity --progress --text="Processing APK File:\n$APKFILE" --pulsate --no-cancel --auto-kill
+pcmanfm-qt -n $(dirname -z "$APKFILE") &
 echo Complete
 exit 0
