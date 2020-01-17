@@ -19,10 +19,8 @@ if [ "$ask" == "Start mitmproxy" ]; then
 fi
 
 if [ "$ask" == "Show the documentation" ]; then
-    grip -b ~/Desktop
-fi
-
-if [ "$ask" != 1 ]; then
+    grip -b ~/Desktop &
+  else
     break
 fi
 
