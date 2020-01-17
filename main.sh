@@ -21,5 +21,10 @@ fi
 if [ "$ask" == "Show the documentation" ]; then
     grip -b ~/Desktop
 fi
+
+if [ "$ask" != 1 ]; then
+    break
+fi
+
 done
 exit 0
