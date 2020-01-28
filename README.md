@@ -110,7 +110,7 @@ If you are getting errors in the logfile for mitmproxy stating that the certific
 
 ### Step 6 - Android Nougat or Later
 
-Google changed the way the certificate store works in Android Nougat, please follow [this guide to correctly](https://blog.jeroenhd.nl/article/android-7-nougat-and-certificate-authorities) install your certificate.
+Google changed the way the certificate store works in Android Nougat, please follow [this guide to correctly](https://web.archive.org/web/20190905084229/https://blog.jeroenhd.nl/article/android-7-nougat-and-certificate-authorities) install your certificate.
 
 As this is a quick start, the rough steps are:
 
