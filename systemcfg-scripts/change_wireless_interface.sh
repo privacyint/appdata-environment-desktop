@@ -7,10 +7,10 @@ if [ "$wlannic" == "" ]; then
 zenity --warning --text="Your Wireless NIC was not detected"
 exit 1
 fi
-zenity --question --text="Your Wireless NIC appears to be $wlannic, do you want to automatically update configuration files?"
+zenity --question --width=600 --height=400 --text="Your Wireless NIC appears to be $wlannic, do you want to automatically update configuration files?"
 rc=$?
 if [ "${rc}" == "1" ]; then
-exit 1
+break
 fi
 sudo cat << EOF1 > /etc/hostapd/hostapd.conf
 interface=$wlannic
