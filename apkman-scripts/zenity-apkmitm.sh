@@ -4,7 +4,7 @@ zenity --info --no-wrap --text="This program is an assistant for making APKs com
 APKFILE=$(zenity --file-selection --file-filter="*.apk")
 mkdir ~/apk-mitm-processed
 cd ~/apk-mitm-processed
-qterminal --workingfir ~/apk-mitm-processed --execute "lxsudo apk-mitm $APKFILE"
+qterminal --workdir ~/apk-mitm-processed --execute "lxsudo apk-mitm $APKFILE"
 ## zenity --progress --text="Processing APK File:\n$APKFILE" --pulsate --no-cancel --auto-kill
 pcmanfm-qt -n $(dirname $APKFILE) &
 zenity --info --no-wrap --text="apk-mitm Complete"
