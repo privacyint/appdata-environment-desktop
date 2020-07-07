@@ -23,7 +23,7 @@ if [ "$ask" == "Show the documentation" ]; then
 fi
 
 if [ "$ask" == "Update -- Experimental" ]; then
-  qterminal --workingfir ~ --execute "lxsudo apt update; lxsudo apt upgrade; lxsudo pip install --upgrade pip; lxsudo pip install mitmproxy; lxsudo npm install -g apk-mitm"
+  qterminal --workdir ~ --execute "lxsudo apt update; lxsudo apt upgrade; lxsudo pip install --upgrade pip; lxsudo pip install mitmproxy; lxsudo npm install -g apk-mitm"
 fi
 
 if [ "$ask" == "Exit" ]; then
