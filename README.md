@@ -1,7 +1,7 @@
 ![Privacy International Logo](https://privacyinternational.org/sites/default/files/index.png)
 
 # Privacy International's data interception environment
-`Version: 2.1.2-20190730`
+`Version: 2.1.3-20200818`
 
 - [Privacy International's data interception environment](#privacy-internationals-data-interception-environment)
   - [Quick Start Guide](#quick-start-guide)
@@ -39,11 +39,14 @@
 ### Prerequisites (as this is a quick start guide):
 
 - VirtualBox 6.x Installed (https://www.virtualbox.org/wiki/Downloads)
-- A Wifi USB Dongle (https://www.amazon.com/s?k=Ralink+5370) or any other Ralink 5370 Chipset USB Adapter) 
 - Internet Connectivity
 - Some experience of UNIX-like operating systems (particularly those using systemd)
 - Some experience with Android and the Android Developer Bridge (ADB)
-- An Android Handset that is rooted and has ADB enabled, running Oreo (Android 8.X) or earlier
+#### If using a physical handset
+- An Android Handset that is rooted and has ADB enabled
+- A Wifi USB Dongle (https://www.amazon.com/s?k=Ralink+5370) or any other Ralink 5370 Chipset USB Adapter) 
+#### If using an Android Virtual Machine
+- Bluetooth 4.0 Dongle (if wanting to run apps requiring Bluetooth)
 
 ### Step 1 - Download
 
@@ -138,6 +141,35 @@ reboot
 Once restarted, check mitmproxy's certificate has been imported into your mobile device: (Exact path may vary by version) Settings > Security > Encryption & Credentials > Trusted Credentials > System.
 
 You should see mitmproxy's certificate listed.
+
+## Using an Android Virtual Machine
+[Android x86](https://www.android-x86.org/download.html) is a fully-fledged Android which allows either running "live" from the CD or installing to disk.
+
+There are advantages to both processes.
+
+To run Android-x86 with a Bluetooth Dongle, you will (probably) need to download the `-k49` ISO, which provides Linux Kernel version 4.9.
+
+Set the following settings to make the VM bootable:
+1. Display->Graphics Controller = `VBoxVGA`
+1. Network->Network Adapter 1 = `Internal Network (intnet)`
+1. System->Processor(s) = `Minimum 2`
+1. System->Enable Nested VT-x/AMD-V = `checked`
+1. System->Motherboard->Base Memory = `Minimum 4096MB`
+1. Attach the ISO to your VM
+
+On boot, open your web browser and go to `mitm.it`
+1. Click the Android icon, type "mitmproxy" for the certificate name, and click OK
+1. You will be asked to set up a PIN at this point, `1984` seems apropos
+1. Open the terminal, and type in the following commands
+```
+su -
+mount -o remount,rw /system
+file=$(ls /data/misc/user/0/cacerts-added)
+mv /data/misc/user/0/cacerts-added/${file} /system/etc/security/cacerts/
+chown root.root /system/etc/security/cacerts/${file}
+chmod 644 /system/etc/security/cacerts/${file}
+sync
+```
 
 ## Background
 In December 2018, [Privacy International](https://privacyinternational.org) released a [report](https://privacyinternational.org/report/2647/how-apps-android-share-data-facebook-report) highlighting how [Facebook can track you via Android apps even when you're not a Facebook user](https://privacyinternational.org/appdata). [Frederike Kaltheuner](https://twitter.com/F_kaltheuner) and [Christopher Weatherhead](https://twitter.com/cjfweatherhead) presented the findings of this report at the [35th Chaos Computer Congress (35C3)](https://media.ccc.de/v/35c3-9941-how_facebook_tracks_you_on_android). Privacy International committed during that talk to releasing the environment used to conduct this research to allow others to either repeat or expand upon it.
