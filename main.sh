@@ -23,7 +23,7 @@ if [ "$ask" == "Show the documentation" ]; then
 fi
 
 if [ "$ask" == "Update -- Experimental" ]; then
-  zenity --question --width=600 --height=400 --text="WARNING: This is an experimental feature /n it may cause features to no longer function correctly /n Click Yes if you would like to update and No to cancel"
+  zenity --question --width=600 --height=400 --text="WARNING: This is an experimental feature \n it may cause features to no longer function correctly \n Click Yes if you would like to update and No to cancel"
   rc=$?
   if [ "${rc}" == "1" ]; then
   exit 1
