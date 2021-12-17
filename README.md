@@ -1,4 +1,5 @@
-![Privacy International Logo](https://privacyinternational.org/sites/default/files/index.png)
+![PI Logo Roundel Flat RGB Solid](https://user-images.githubusercontent.com/58432995/146573769-fc51d7ff-fad3-469f-bba8-39cd12af23fb.png)
+
 
 # Privacy International's data interception environment
 `Version: 2.1.2-20190730`
@@ -7,11 +8,13 @@
   - [Quick Start Guide](#quick-start-guide)
     - [Step 0 - Prerequisites](#prerequisites-as-this-is-a-quick-start-guide)
     - [Step 1 - Download](#step-1---download)
-    - [Step 2 - Importation](#step-2---importation)
-    - [Step 3 - Initialising](#step-3---initialising)
-    - [Step 4 - Setup](#step-4---setup)
-    - [Step 5 - Capture](#step-5---capture)
-    - [Step 6 - Notes for Android Nougat or Later](#step-6---android-nougat-or-later)
+    - [Step 2 - Add a device](#step-2---Adding-a-device)
+    - [Step 3 - Downloading your apps](#step-3---downloading-your-apps)
+    - [Step 4 - Initialising](#step-4---Initialising)
+    - [Step 5 - Setup](#step-5---setup-interception)
+    - [Step 6 - Start collecting and analysing](#step6---start-collecting-and-analysing)
+    - [Step 7 - Start testing apps](#step7---start-testing-apps)
+    - [Notes on Certificate pinning](#notes-on-certificate-pinning)
   - [Background](#background)
   - [Theory](#theory)
   - [Implementation](#implementation)
@@ -38,107 +41,125 @@
 
 ### Prerequisites (as this is a quick start guide):
 
-- VirtualBox 6.x Installed (https://www.virtualbox.org/wiki/Downloads)
-- A Wifi USB Dongle (https://www.amazon.com/s?k=Ralink+5370) or any other Ralink 5370 Chipset USB Adapter) 
+- VirtualBox Version 6.1 or later Installed (https://www.virtualbox.org/wiki/Downloads)
+- Genymotion Installed (https://www.genymotion.com/)
+- Unarchival software (such as 7Zip, Peazip, Keka, Ark etc)
 - Internet Connectivity
 - Some experience of UNIX-like operating systems (particularly those using systemd)
 - Some experience with Android and the Android Developer Bridge (ADB)
-- An Android Handset that is rooted and has ADB enabled, running Oreo (Android 8.X) or earlier
+- Web browser
+- If you are using a physical phone: an Android Handset that is rooted and has ADB enabled, running Oreo (Android 8.X) or earlier
 
 ### Step 1 - Download
 
-Head to Privacy International's website and download the VM/Virtual Appliance (OVA, extension .ova): [https://privacyinternational.org/mitmproxy19](https://privacyinternational.org/mitmproxy19)
+Download the latest release of the Data Interception Environment (DIE) (https://github.com/privacyint/appdata-environment-desktop/releases) It’s a multi-part archive – so you’ll need to download all the parts. They are in OVA format, which means you will need Oracle’s VirtualBox to open them. They can be extracted with any of the unarchival software mentioned above. 
 
-### Step 2 - Importation
+### Step 2 - Adding a device
 
-Double Click on the OVA.
+Open Genymotion and add a device – there are a large selection of phones that you can choose from. For this tutorial we’re going to set up a virtual Pixel phone running Android 8.1. Once you pick the phone you want to choose, select it. 
 
-This should open VirtualBox if *.ova* is associated with VirtualBox, otherwise you can click *Import Appliance* from the File Menu in VirtualBox
+### Step 3 - Downloading your apps
 
-Click import
+Sign in to a Google account, this will allow you to access the Play Store. You can then download any apps you want to test. We’d also strongly recommend installing a browser, such as Google Chrome. 
 
-Read and accept the licence agreement
+### Step 4 - Initialising
 
-### Step 3 - Initialising
+Once the OVA is extracted double click on it, which will open it in VirtualBox. Some information about the DIE will pop up, click Import, then read and agree to the license terms.
 
-Plug in your Wifi USB if you haven't done so already.
+Start the Data Interception Environment. A menu should pop up – this includes all the key set features that you might want to use. This This includes an option to configure a wireless adaptor so you can connect a real phone to the environment. As part of this you may wish to enable hostapd, which is a wireless access point daemon. You can also run an APK through apk-mitm, which allows it to be decompiled so you can remove certificate pinning. The key option here is to start mitmproxy, which allows you to wirelessly intercept secure sessions – which is the option you will likely use most often. There is also an option for showing the documentation. And you can update the environment through the link provided, although this functionality is relatively experimental.
 
-Make sure the Wifi USB dongle is connected to the Virtual Machine ( Menu Bar - Device -> USB )
+### Step 5 - Setup interception
 
-### Step 4 - Setup
+Once you have all the apps you wanted to test installed, shut down the virtual phone and go to the settings in VirtualBox for the phone you’re using. The key one to change here is to change the network adaptor, on adaptor two, from NAT to an internal network. We called it ‘iNet’. You can leave the rest of the settings as they were. You can leave the rest of the settings as they were. You'll be able to see that the environment also has a secondary adaptor, also connected to iNET.
 
-Start the Virtual Machine, either by clicking the *Start* button in the VirtualBox Manager, or by double-clicking on the VM in the list.
+The reason for changing this network interface is so that all the data will be transferred across the internal network, so that the DIE will be able to intercept them.
 
-Once the desktop has loaded, you will need to run 
-`change_wireless_interface.sh`, which will provide the wireless daemon with the device identifier for your wireless network dongle
+Start the phone through Genymotion. If you start the phone through VirtualBox the phone will start but you won’t be able to use the interface. Once the phone has started, look at the network settings on the handset, it should be connected to Android wifi. And it should say, "Connected. No internet." This is a good sign.
 
-Open the Terminal (Applications -> System Tools -> QTerminal)
+You should, hopefully, see that it has an IP address starting 100.64 which means that the environment has set the IP rather than it being coming from a localized NAT device, as they usually start 192.168. 56. The environment always gives the IPs in the 100.64.s32 range.
 
-Type the following command ```sudo systemctl enable hostapd``` to enable the Wireless Daemon
+### Step 6 - Start collecting and analysing
 
-**Reboot the Virtual Machine**
+Start Mitmproxy. Now open the web viewer in the phone and look at mitmproxy – you should see the request coming in on the data interception environment. You can also summon instructions there as to how to set up the device, including information around if you want to use mitmproxy with devices running API level 24 or higher.
 
-Check on your mobile device and see if it can connect to the WiFi network "```pi_maninthemiddle```".
+Open your web browser on the virtual phone and go to mitm.it and download the certificate. Once the certificate is downloaded it will appear in the download section of the files app.
 
-Now your device should say "Connected, no Internet" (showing an *X* against the WiFi symbol) - This is good! This means that your device is waiting for mitmproxy to be started
+Start your local terminal so you can install certificates into the system root store as outlined in the documentation on the GitHub and inside the DIE.
 
-You can now start mitmproxy using "```mitmproxy_start.sh```" on the desktop
+Run ADB devices to see which devices are available to connect to. There’s only one device available, which is the Genymotion device.
 
-When you have finished, you can end your session "```mitmproxy_stop.sh```". Your captured data will be saved in your home directory.
+Then start ADB shell, which will allow you to access the local console of the Genymotion phone.
 
-**Troubleshooting:**
-(most of these require the use of the terminal)
+If you change the directory to SD card download and list the directory, you should see the mitmproxy certificate listed there. For the time being you can close mitmproxy as you don’t need it.
 
-***I cannot see the "```pi_maninthemiddle```" network on my device***
-Something is is likely wrong with either your hardware or hostapd. 
+Copy and paste the open SSL command from below or from the local documentation into the local console in the VM running the DIE.
 
-- Double check that your WiFi dongle is connected to the Virtual Machine.
-- Make sure the interface name is correct in hostapd's configuration file: ```sudo nano /etc/hostapd/hostapd.conf```
-- You can run hostapd manually to see if there are any other issues causing it to not start: ```sudo killall hostapd; sleep 4; sudo hostapd -p /etc/hostapd/hostapd.conf```
+sudo openssl x509 -inform PEM -subject_hash_old -in /root/.mitmproxy/mitmproxy-ca-cert.pem | head -1
 
-***I am not being assigned an IP address (My device can see the network, but keeps looping between connecting states)***
+This will return the name you will later need to give the file in Android for it to recognize the certificate authority.  This is how you’re going to become the local administrator on the virtual device.
 
-- Restart dnsmasq ```sudo service dnsmasq restart```
+When we copied the open SSL command into the console, we got the output C8750F0D. This is the name we'll have to give the certificate later when we copy it into the system root store on the Genymotion device.
 
-### Step 5 - Capture
+Go back to your local console, which should still be running ADB shell
 
-Once you have started mitmproxy, visit ```http://mitm.it``` on your mobile device in a web browser. You should receive prompts to install the certificate on your device.
+First execute su to become super user on the device, i.e. the local administrator.
 
-Install the certificate, and using a web browser app like Chrome see if you can browse the Internet on your device,
+Remount the partition system folder. This allows us to modify system data, which is usually read only.
 
-If you are getting errors in the logfile for mitmproxy stating that the certificate is not trusted, see below - Step 6
-
-### Step 6 - Android Nougat or Later
-
-Google changed the way the certificate store works in Android Nougat, please follow [this guide to correctly](https://web.archive.org/web/20190905084229/https://blog.jeroenhd.nl/article/android-7-nougat-and-certificate-authorities) install your certificate.
-
-As this is a quick start, the rough steps are:
-
-- Get the ID of the Certificate in a format that Android Expects `sudo openssl x509 -inform PEM -subject_hash_old -in /root/.mitmproxy/mitmproxy-ca-cert.pem | head -1`
-- Note the output: e.g "abcdef12"
-- Copy the Certificate to the Device over ADB `adb push /root/.mitmproxy/mitmproxy-ca-cert.pem /sdcard/<NamefromOpenSSLOutput>.0`
-- Remount the /system partition as read-write, copy the certificate, set its permissions (requires superuser/root access):
-
-```
-adb shell
-su
 mount -o remount,rw /system
-cp /sdcard/<NamefromOpenSSLOutput>.0 /system/etc/security/cacerts
-chmod 644 /system/etc/security/cacerts/NamefromOpenSSLOutput>.0
-chown root:root /system/etc/security/cacerts/NamefromOpenSSLOutput>.0
-mount -o remount,ro /system
-```
 
-- Then reboot the device
+Copy the certificate from the downloads folder into the systems certificate folder.  You can use this in the console: cp /sdcard/Download/mitmproxy-ca-cert.pem /system/etc/security/cacerts/<NamefromOpenSSLOutput>.0
 
-```
-reboot
-```
+When copying the file, you need to use the name you retrieved earlier running from running the open SSL command, for us that would be C8750F0D. And then the extension is .0 – making the full title C8750F0D.0
 
-Once restarted, check mitmproxy's certificate has been imported into your mobile device: (Exact path may vary by version) Settings > Security > Encryption & Credentials > Trusted Credentials > System.
+You now need to change the file permissions, so copy this into the console: chmod 644 /system/etc/security/cacerts/<NamefromOpenSSLOutput>.0
 
-You should see mitmproxy's certificate listed.
+And again, type in the certificate's name to replace <NamefromOpenSSLOutput>.
 
+You also need to change who the file belongs to and make sure it belongs to root: chown root:root /system/etc/security/cacerts/NamefromOpenSSLOutput>.0
+
+Now remount the file system read only: mount -o remount,ro /system
+
+Reboot the device.
+
+Exit the console and restart mitmproxy. You should see on the left that the device is now rebooting. Open mitmproxy in the web browser – you should be able to see a large amount of data that’s being collected. This is because as the device boots up it checks for internet access.
+
+Look at the WiFi settings, it should now just say ‘connected’, unlike before where it said ‘connected, no internet’.
+
+You can check that mitmproxy is installed correctly, by opening your browser and going to a website. You can go to the list of things being intercepted by mitmproxy and you’ll be able to see all the requests being made to the website.
+
+Then, if click on the status bar, you should see that the certificate being presented is from mitmproxy, and if you look at the certificate information you should see that the assurer is mitmproxy.
+
+Just for the sake of completeness, go to Privacy International's website not on the phone and you should see your browser isn't being intercepted. Again, look at the certificate information - this certificate is usually issued by DigiSure, Inc. If you look at the certificate it even includes all the information about PI.
+
+You can now close your browser, and all the other applications you had open – you don’t need any at the moment.
+
+Open the settings app and do a search for certificates and look at the trusted credentials section. Displays, which displays the trusted CAs and click on the system section. You can scroll down and see that the mitmproxy is a trusted system root.
+
+Close mitmproxy and start a new session. Every time mitmproxy is restarted, the previous capture is saved to disk. If you head back to mitmproxy's webpage. You should see the capture is now clear as a new capture has been started. We would recommend always starting a new capture with every different application you wish to test.
+  
+### Step 7 - Start testing apps
+  
+Open the first app you want to test.
+
+If you click on ‘request’, you should be able to see what the original request was and what the response was.
+
+For example, this is Google Firebase and we can see what token was used to authenticate with and what response was given for that Firebase installation.
+
+In the bottom right-hand corner you can also find out information such as the SDK conversion of this version of Firebase Analytics and you can see things like remote requests. You can also see downloaded imagery such as that displayed in the top portion of the Met Office app – in this case the logo.
+
+As you click things in the app, such as accepting the privacy policy, you should see more connections being made – some will be content, others metrics, advertising, or other third party services.
+
+The DIE can tell you what’s being sent from your device and where to, but it cannot tell you want the company is doing with that information, what processing they are doing, or whether they are sending that data on to third parties. Above you can see what the app is sending to Facebook, but it can’t tell you what Facebook is doing with that information.
+
+When you’re done with the app – you can close your mitmproxy session. All captures are stored locally in privacy’s home folder, so the most recent captures can all be reloaded. If you want to analyse another app – start a new mitmproxy session. 
+
+### A note on certificate pinning
+  
+One of the new features of the data interception environment is the inclusion of APK MITM, which allows the removal of certificate pins. Some large apps, like Facebook, banking apps, Twitter and some of the other apps that have large numbers of users, use a technique called certificate pinning, which means that they expect certain certificates to be presented by the remote side by making a connection. And if the, the certificate differs, then they will not make the secured connection.
+
+What APK MITM allows is the removal of those pins so you can continue to do analysis in the data interception environment.
+  
 ## Background
 In December 2018, [Privacy International](https://privacyinternational.org) released a [report](https://privacyinternational.org/report/2647/how-apps-android-share-data-facebook-report) highlighting how [Facebook can track you via Android apps even when you're not a Facebook user](https://privacyinternational.org/appdata). [Frederike Kaltheuner](https://twitter.com/F_kaltheuner) and [Christopher Weatherhead](https://twitter.com/cjfweatherhead) presented the findings of this report at the [35th Chaos Computer Congress (35C3)](https://media.ccc.de/v/35c3-9941-how_facebook_tracks_you_on_android). Privacy International committed during that talk to releasing the environment used to conduct this research to allow others to either repeat or expand upon it.
 
