@@ -2,7 +2,7 @@
 
 
 # Privacy International's data interception environment
-`Version: 2.1.2-20190730`
+`Version: 3.1.2-20211205`
 
 - [Privacy International's data interception environment](#privacy-internationals-data-interception-environment)
   - [Quick Start Guide](#quick-start-guide)
